@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: openedx-ingress
+  namespace: openedx
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: usamaaijaz.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: lms
+            port:
+              number: 8000
+  - host: studio.usamaaijaz.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: cms
+            port:
+              number: 8000
