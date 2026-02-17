@@ -3,8 +3,17 @@ kind: Ingress
 metadata:
   name: openedx-ingress
   namespace: openedx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - usamaaijaz.com
+    - studio.usamaaijaz.com
+    - apps.usamaaijaz.com
+    secretName: openedx-tls
   rules:
   - host: usamaaijaz.com
     http:
@@ -26,3 +35,13 @@ spec:
             name: cms
             port:
               number: 8000
+  - host: apps.usamaaijaz.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: mfe
+            port:
+              number: 8002
